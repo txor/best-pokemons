@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @RestController
-public class HeavyController {
+public class ExperienceController {
 
-    @RequestMapping(value = "/heaviest", produces = {"application/JSON"})
+    @RequestMapping(value = "/most_experienced", produces = {"application/JSON"})
     public List<PokemonDTO> locations() {
         return new ArrayList<>();
     }

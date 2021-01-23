@@ -1,0 +1,31 @@
+{
+  "count": 6,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "name": "spearow",
+      "url": "https://localhost:8080/api/v2/pokemon/21/"
+    },
+    {
+      "name": "fearow",
+      "url": "https://localhost:8080/api/v2/pokemon/22/"
+    },
+    {
+      "name": "ekans",
+      "url": "https://localhost:8080/api/v2/pokemon/23/"
+    },
+    {
+      "name": "arbok",
+      "url": "https://localhost:8080/api/v2/pokemon/24/"
+    },
+    {
+      "name": "pikachu",
+      "url": "https://localhost:8080/api/v2/pokemon/25/"
+    },
+    {
+      "name": "raichu",
+      "url": "https://localhost:8080/api/v2/pokemon/26/"
+    }
+  ]
+}
