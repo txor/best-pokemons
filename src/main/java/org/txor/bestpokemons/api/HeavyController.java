@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.txor.bestpokemons.domain.HeavyService;
+import org.txor.bestpokemons.domain.PokemonDTO;
 import org.txor.bestpokemons.domain.PokemonToPokemonDtoConverter;
 
 import java.util.List;
