@@ -1,4 +1,4 @@
-package org.txor;
+package org.txor.bestpokemons;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
