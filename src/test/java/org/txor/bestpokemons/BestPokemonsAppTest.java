@@ -1,14 +1,12 @@
 package org.txor.bestpokemons;
 
-import com.github.tomakehurst.wiremock.junit.WireMockRule;
-import org.junit.Rule;
-import org.junit.Test;
+import com.github.tomakehurst.wiremock.WireMockServer;
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.txor.bestpokemons.api.PokemonDTO;
 
 import java.io.File;
@@ -19,14 +17,12 @@ import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BestPokemonsAppTest {
 
-    @Rule
-    public WireMockRule wireMockRule = new WireMockRule();
+    private static final WireMockServer wireMockServer = new WireMockServer(8080);
 
     @LocalServerPort
     private int port;
@@ -35,6 +31,7 @@ public class BestPokemonsAppTest {
 
     @BeforeAll
     static void setup() throws IOException {
+        wireMockServer.start();
         stubFor(get(urlEqualTo("/api/v2/pokemon"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
@@ -63,6 +60,11 @@ public class BestPokemonsAppTest {
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("raichu.json"))));
+    }
+
+    @AfterAll
+    static void shutdown() {
+        wireMockServer.stop();
     }
 
     @Test
