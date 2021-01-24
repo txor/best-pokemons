@@ -13,4 +13,7 @@ public interface PokemonRepository extends CrudRepository<PokemonDAO, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM pokemon ORDER BY height DESC LIMIT 5")
     List<PokemonDAO> getTallest();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM pokemon")
+    List<PokemonDAO> getMostExperienced();
 }
