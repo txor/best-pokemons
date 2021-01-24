@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.txor.bestpokemons.domain.HeavyService;
+import org.txor.bestpokemons.domain.HeightService;
 import org.txor.bestpokemons.domain.Pokemon;
 import org.txor.bestpokemons.domain.PokemonDTO;
 import org.txor.bestpokemons.domain.PokemonToPokemonDtoConverter;
@@ -19,23 +19,23 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 @ExtendWith(MockitoExtension.class)
-public class HeavyControllerTest {
+class HeightControllerTest {
 
     @Mock
     private PokemonToPokemonDtoConverter pokemonToPokemonDtoConverter;
 
     @Mock
-    private HeavyService heavyService;
+    private HeightService heightService;
 
     @Test
-    public void heaviest_shouldRelyOnServiceAndConverterToProvidePokemonList() {
-        given(heavyService.getTopHeavy5Pokemons()).willReturn(Arrays.asList(new Pokemon(), new Pokemon(), new Pokemon()));
-        HeavyController heavyController = new HeavyController(heavyService, pokemonToPokemonDtoConverter);
+    public void highest_shouldRelyOnServiceAndConverterToProvidePokemonList() {
+        given(heightService.getTopTallest5Pokemons()).willReturn(Arrays.asList(new Pokemon(), new Pokemon(), new Pokemon()));
+        HeightController heavyController = new HeightController(heightService, pokemonToPokemonDtoConverter);
 
-        List<PokemonDTO> pokemons = heavyController.heaviest();
+        List<PokemonDTO> pokemons = heavyController.highest();
 
         assertEquals(3, pokemons.size());
-        verify(heavyService).getTopHeavy5Pokemons();
+        verify(heightService).getTopTallest5Pokemons();
         verify(pokemonToPokemonDtoConverter, times(3)).convert(any());
     }
 }
