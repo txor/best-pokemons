@@ -36,7 +36,7 @@ public class BestPokemonsAppTest {
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("pokemons_page1.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon?offset=6&limit=20"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("pokemons_page2.json"))));

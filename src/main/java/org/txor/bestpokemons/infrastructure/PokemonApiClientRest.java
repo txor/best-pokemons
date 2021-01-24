@@ -29,7 +29,10 @@ public class PokemonApiClientRest implements PokemonApiClient {
             PokemonPageDTO pokemonPage = restTemplate.getForObject(nextUrl, PokemonPageDTO.class);
             nextUrl = pokemonPage.getNext();
             for (PokemonReferenceDTO pokemon : pokemonPage.getResults()) {
-                pokemons.add(restTemplate.getForObject(pokemon.getUrl(), PokemonApiDTO.class));
+                PokemonApiDTO pokemonApiDTO = restTemplate.getForObject(pokemon.getUrl(), PokemonApiDTO.class);
+                pokemonApiDTO.setName(pokemon.getName());
+                pokemonApiDTO.setUrl(pokemon.getUrl());
+                pokemons.add(pokemonApiDTO);
             }
         } while (nextUrl != null);
 
