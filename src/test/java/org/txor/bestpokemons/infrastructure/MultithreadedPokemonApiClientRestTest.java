@@ -24,14 +24,14 @@ import static org.springframework.test.web.client.match.MockRestRequestMatchers.
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
-@RestClientTest(PokemonApiClientRest.class)
-@TestPropertySource(properties = "pokemon.api.url=http://localhost:8080/api/v2/pokemon")
-public class PokemonApiClientRestTest {
+@RestClientTest(MultithreadedPokemonApiClientRest.class)
+@TestPropertySource(properties = {"pokemon.api.url=http://localhost:8080/api/v2/pokemon", "pokemon.api.threads=1"})
+public class MultithreadedPokemonApiClientRestTest {
 
     private static final String userAgent = "java";
 
     @Autowired
-    private PokemonApiClientRest client;
+    private MultithreadedPokemonApiClientRest client;
 
     @Autowired
     private MockRestServiceServer server;
@@ -44,43 +44,15 @@ public class PokemonApiClientRestTest {
         this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon"))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("pokemons_page1.json"), MediaType.APPLICATION_JSON));
+                .andRespond(withSuccess(getBodyFromFile("pokemons_page1_simple.json"), MediaType.APPLICATION_JSON));
         this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/21/"))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
                 .andRespond(withSuccess(getBodyFromFile("spearow.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/22/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("fearow.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/23/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("ekans.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/24/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("arbok.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/25/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("pikachu.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon?offset=7&limit=20"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("pokemons_page2.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/26/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("raichu.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/304/"))
-                .andExpect(method(HttpMethod.GET))
-                .andExpect(header("User-Agent", userAgent))
-                .andRespond(withSuccess(getBodyFromFile("aron.json"), MediaType.APPLICATION_JSON));
 
         List<PokemonApiDTO> pokemons = this.client.getAllPokemons();
 
-        assertEquals(7, pokemons.size());
+        assertEquals(1, pokemons.size());
     }
 
 

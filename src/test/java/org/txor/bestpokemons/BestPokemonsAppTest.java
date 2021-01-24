@@ -19,7 +19,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(properties = "pokemon.api.url=http://localhost:8080/api/v2/pokemon", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = {"pokemon.api.url=http://localhost:8080/api/v2/pokemon", "pokemon.api.threads=1"}, webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BestPokemonsAppTest {
 
     private static final WireMockServer wireMockServer = new WireMockServer(8080);
@@ -95,10 +95,6 @@ public class BestPokemonsAppTest {
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("pokemons_page1.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon?offset=7&limit=20"))
-                .willReturn(aResponse()
-                        .withHeader("Content-Type", "application/json")
-                        .withBody(getBodyFromFile("pokemons_page2.json"))));
         stubFor(get(urlEqualTo("/api/v2/pokemon/21/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
@@ -129,8 +125,8 @@ public class BestPokemonsAppTest {
                         .withBody(getBodyFromFile("aron.json"))));
     }
 
-    private static String getBodyFromFile(String fileName) throws IOException {
-        File file = new File(BestPokemonsAppTest.class.getResource("/" + fileName).getFile());
+    private String getBodyFromFile(String fileName) throws IOException {
+        File file = new File(getClass().getResource("/" + fileName).getFile());
         return new String(Files.readAllBytes(file.toPath()));
     }
 }

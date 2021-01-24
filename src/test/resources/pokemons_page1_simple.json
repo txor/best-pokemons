@@ -1,0 +1,11 @@
+{
+  "count": 1,
+  "next": null,
+  "previous": null,
+  "results": [
+    {
+      "name": "spearow",
+      "url": "http://localhost:8080/api/v2/pokemon/21/"
+    }
+  ]
+}
