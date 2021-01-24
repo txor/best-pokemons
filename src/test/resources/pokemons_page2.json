@@ -1,11 +1,15 @@
 {
-  "count": 6,
+  "count": 7,
   "next": null,
-  "previous": "http://localhost:8080/api/v2/pokemon?offset=6&limit=20",
+  "previous": "http://localhost:8080/api/v2/pokemon?offset=7&limit=20",
   "results": [
     {
       "name": "raichu",
       "url": "http://localhost:8080/api/v2/pokemon/26/"
+    },
+    {
+      "name": "aron",
+      "url": "http://localhost:8080/api/v2/pokemon/304/"
     }
   ]
 }

@@ -62,7 +62,7 @@ public class PokemonApiClientRestTest {
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
                 .andRespond(withSuccess(getBodyFromFile("pikachu.json"), MediaType.APPLICATION_JSON));
-        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon?offset=6&limit=20"))
+        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon?offset=7&limit=20"))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
                 .andRespond(withSuccess(getBodyFromFile("pokemons_page2.json"), MediaType.APPLICATION_JSON));
@@ -70,13 +70,17 @@ public class PokemonApiClientRestTest {
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
                 .andRespond(withSuccess(getBodyFromFile("raichu.json"), MediaType.APPLICATION_JSON));
+        this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon/304/"))
+                .andExpect(method(HttpMethod.GET))
+                .andExpect(header("User-Agent", userAgent))
+                .andRespond(withSuccess(getBodyFromFile("aron.json"), MediaType.APPLICATION_JSON));
     }
 
     @Test
     public void getAllPokemons_shouldCallPokeApiForEveryPageAndRetrieveEveryPokemonOnTheResponses() {
         List<PokemonApiDTO> pokemons = this.client.getAllPokemons();
 
-        assertEquals(6, pokemons.size());
+        assertEquals(7, pokemons.size());
     }
 
     private static String getBodyFromFile(String fileName) throws IOException {
