@@ -11,4 +11,5 @@ public class PokemonApiDTO {
     private String height;
     @JsonProperty("base_experience")
     private String experience;
+    private String[] versions;
 }

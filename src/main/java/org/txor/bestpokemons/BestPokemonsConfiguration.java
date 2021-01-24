@@ -9,6 +9,7 @@ import org.txor.bestpokemons.domain.HeightService;
 import org.txor.bestpokemons.domain.PokemonApiClient;
 import org.txor.bestpokemons.domain.PokemonApiDTOToPokemonDAOConverter;
 import org.txor.bestpokemons.domain.PokemonDaoToPokemonConverter;
+import org.txor.bestpokemons.domain.PokemonFilter;
 import org.txor.bestpokemons.domain.PokemonToPokemonDtoConverter;
 import org.txor.bestpokemons.domain.RefreshDataService;
 import org.txor.bestpokemons.repository.PokemonRepository;
@@ -50,7 +51,7 @@ public class BestPokemonsConfiguration {
     }
 
     @Bean
-    public RefreshDataService refreshDataService(PokemonApiClient pokemonApiClient, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter) {
-        return new RefreshDataService(pokemonRepository, pokemonApiClient, pokemonApiDtoToPokemonDaoConverter);
+    public RefreshDataService refreshDataService(PokemonApiClient pokemonApiClient, PokemonFilter pokemonFilter, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter) {
+        return new RefreshDataService(pokemonRepository, pokemonApiClient, pokemonFilter, pokemonApiDtoToPokemonDaoConverter);
     }
 }
