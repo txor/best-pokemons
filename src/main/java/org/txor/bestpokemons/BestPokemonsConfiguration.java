@@ -12,6 +12,7 @@ import org.txor.bestpokemons.domain.PokemonDaoToPokemonConverter;
 import org.txor.bestpokemons.domain.PokemonFilter;
 import org.txor.bestpokemons.domain.PokemonToPokemonDtoConverter;
 import org.txor.bestpokemons.domain.RefreshDataService;
+import org.txor.bestpokemons.domain.filters.RedVersionPokemonFilter;
 import org.txor.bestpokemons.repository.PokemonRepository;
 
 @Configuration
@@ -33,6 +34,11 @@ public class BestPokemonsConfiguration {
     @Bean
     public PokemonApiDTOToPokemonDAOConverter pokemonApiDTOToPokemonDAOConverter() {
         return new PokemonApiDTOToPokemonDAOConverter();
+    }
+
+    @Bean
+    public PokemonFilter pokemonFilter() {
+        return new RedVersionPokemonFilter();
     }
 
     @Bean
