@@ -85,7 +85,7 @@ public class BestPokemonsAppTest {
 
     @Test
     public void bestPokemonsApp_shouldReturnThe5HighestPokemonsFromPokeapi() {
-        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/highest", PokemonDTO[].class);
+        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/tallest", PokemonDTO[].class);
 
         assertEquals(5, pokemons.length);
         assertEquals("arbok", pokemons[0].getName());

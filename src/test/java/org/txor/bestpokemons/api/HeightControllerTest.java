@@ -32,7 +32,7 @@ class HeightControllerTest {
         given(heightService.getTopTallest5Pokemons()).willReturn(Arrays.asList(new Pokemon(), new Pokemon(), new Pokemon()));
         HeightController heavyController = new HeightController(heightService, pokemonToPokemonDtoConverter);
 
-        List<PokemonDTO> pokemons = heavyController.highest();
+        List<PokemonDTO> pokemons = heavyController.tallest();
 
         assertEquals(3, pokemons.size());
         verify(heightService).getTopTallest5Pokemons();

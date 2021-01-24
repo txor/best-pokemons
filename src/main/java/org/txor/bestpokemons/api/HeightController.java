@@ -20,8 +20,8 @@ public class HeightController {
         this.pokemonToPokemonDtoConverter = pokemonToPokemonDtoConverter;
     }
 
-    @RequestMapping(value = "/highest", produces = {"application/JSON"})
-    public List<PokemonDTO> highest() {
+    @RequestMapping(value = "/tallest", produces = {"application/JSON"})
+    public List<PokemonDTO> tallest() {
         return heightService.getTopTallest5Pokemons().stream().map(pokemonToPokemonDtoConverter::convert).collect(Collectors.toList());
     }
 }
