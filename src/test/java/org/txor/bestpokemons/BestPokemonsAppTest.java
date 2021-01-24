@@ -91,7 +91,7 @@ public class BestPokemonsAppTest {
         assertEquals("arbok", pokemons[0].getName());
         assertEquals("ekans", pokemons[1].getName());
         assertEquals("fearow", pokemons[2].getName());
-        assertEquals("riachu", pokemons[3].getName());
+        assertEquals("raichu", pokemons[3].getName());
         assertEquals("pikachu", pokemons[4].getName());
     }
 
