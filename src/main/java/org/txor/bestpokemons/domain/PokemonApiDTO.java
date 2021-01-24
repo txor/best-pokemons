@@ -1,7 +1,8 @@
 package org.txor.bestpokemons.domain;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Data;
+
+import java.util.List;
 
 @Data
 public class PokemonApiDTO {
@@ -9,7 +10,6 @@ public class PokemonApiDTO {
     private String url;
     private String weight;
     private String height;
-    @JsonProperty("base_experience")
     private String experience;
-    private String[] versions;
+    private List<String> versions;
 }
