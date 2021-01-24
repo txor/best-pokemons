@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
 import org.springframework.boot.web.server.LocalServerPort;
+import org.springframework.test.context.jdbc.Sql;
 import org.txor.bestpokemons.domain.PokemonDTO;
 
 import java.io.File;
@@ -76,7 +77,8 @@ public class BestPokemonsAppTest {
     }
 
     @Test
-    public void bestPokemonsApp_shouldReturnNothingIfPokeApiIsNotResponding() {
+    @Sql("/delete_data.sql")
+    public void bestPokemonsApp_shouldReturnNothingIfPokeApiIsNotRespondingAndNeverLoadedPokemonData() {
         wireMockServer.start();
         stubFor(get(urlEqualTo("/api/v2/pokemon"))
                 .willReturn(aResponse()
