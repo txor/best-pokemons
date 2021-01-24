@@ -10,4 +10,7 @@ public interface PokemonRepository extends CrudRepository<PokemonDAO, Integer> {
 
     @Query(nativeQuery = true, value = "SELECT * FROM pokemon ORDER BY weight DESC LIMIT 5")
     List<PokemonDAO> getHeaviest();
+
+    @Query(nativeQuery = true, value = "SELECT * FROM pokemon LIMIT 5")
+    List<PokemonDAO> getTallest();
 }

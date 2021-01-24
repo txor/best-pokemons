@@ -3,7 +3,6 @@ package org.txor.bestpokemons.domain;
 import lombok.Data;
 
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -13,8 +12,6 @@ import javax.persistence.Table;
 public class PokemonDAO {
 
     @Id
-    @GeneratedValue
-    private int id;
     private String name;
     private String url;
     private int weight;

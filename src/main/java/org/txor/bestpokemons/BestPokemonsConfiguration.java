@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.txor.bestpokemons.domain.HeavyService;
+import org.txor.bestpokemons.domain.HeightService;
 import org.txor.bestpokemons.domain.PokemonApiClient;
 import org.txor.bestpokemons.domain.PokemonApiDTOToPokemonDAOConverter;
 import org.txor.bestpokemons.domain.PokemonDaoToPokemonConverter;
@@ -35,6 +36,11 @@ public class BestPokemonsConfiguration {
     @Bean
     public HeavyService heavyService(RefreshDataService refreshDataService, PokemonDaoToPokemonConverter pokemonDaoToPokemonConverter) {
         return new HeavyService(refreshDataService, pokemonRepository, pokemonDaoToPokemonConverter);
+    }
+
+    @Bean
+    public HeightService heightService(RefreshDataService refreshDataService, PokemonDaoToPokemonConverter pokemonDaoToPokemonConverter) {
+        return new HeightService(refreshDataService, pokemonRepository, pokemonDaoToPokemonConverter);
     }
 
     @Bean
