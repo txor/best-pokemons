@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.txor.bestpokemons.domain.ExperienceService;
 import org.txor.bestpokemons.domain.HeavyService;
 import org.txor.bestpokemons.domain.HeightService;
+import org.txor.bestpokemons.domain.LogService;
 import org.txor.bestpokemons.domain.PokemonApiClient;
 import org.txor.bestpokemons.domain.PokemonApiDTOToPokemonDAOConverter;
 import org.txor.bestpokemons.domain.PokemonDaoToPokemonConverter;
@@ -52,12 +53,17 @@ public class BestPokemonsConfiguration {
     }
 
     @Bean
+    public LogService logService() {
+        return new LogService();
+    }
+
+    @Bean
     public ExperienceService experienceService(RefreshDataService refreshDataService, PokemonDaoToPokemonConverter pokemonDaoToPokemonConverter) {
         return new ExperienceService(refreshDataService, pokemonRepository, pokemonDaoToPokemonConverter);
     }
 
     @Bean
-    public RefreshDataService refreshDataService(PokemonApiClient pokemonApiClient, PokemonFilter pokemonFilter, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter) {
-        return new RefreshDataService(pokemonRepository, pokemonApiClient, pokemonFilter, pokemonApiDtoToPokemonDaoConverter);
+    public RefreshDataService refreshDataService(PokemonApiClient pokemonApiClient, PokemonFilter pokemonFilter, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter, LogService logService) {
+        return new RefreshDataService(pokemonRepository, pokemonApiClient, pokemonFilter, pokemonApiDtoToPokemonDaoConverter, logService);
     }
 }

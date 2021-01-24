@@ -1,7 +1,6 @@
 package org.txor.bestpokemons.infrastructure;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.client.RestClientTest;
@@ -9,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.web.client.MockRestServiceServer;
+import org.springframework.web.client.RestClientResponseException;
 import org.txor.bestpokemons.domain.PokemonApiDTO;
 
 import java.io.File;
@@ -17,14 +17,18 @@ import java.nio.file.Files;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.header;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.method;
 import static org.springframework.test.web.client.match.MockRestRequestMatchers.requestTo;
+import static org.springframework.test.web.client.response.MockRestResponseCreators.withBadRequest;
 import static org.springframework.test.web.client.response.MockRestResponseCreators.withSuccess;
 
 @RestClientTest(PokemonApiClientRest.class)
 @TestPropertySource(properties = "pokemon.api.url=http://localhost:8080/api/v2/pokemon")
 public class PokemonApiClientRestTest {
+
+    private static final String userAgent = "java";
 
     @Autowired
     private PokemonApiClientRest client;
@@ -35,9 +39,8 @@ public class PokemonApiClientRestTest {
     @Autowired
     private ObjectMapper objectMapper;
 
-    @BeforeEach
-    public void setUp() throws Exception {
-        String userAgent = "java";
+    @Test
+    public void getAllPokemons_shouldCallPokeApiForEveryPageAndRetrieveEveryPokemonOnTheResponses() throws IOException {
         this.server.expect(requestTo("http://localhost:8080/api/v2/pokemon"))
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
@@ -74,17 +77,26 @@ public class PokemonApiClientRestTest {
                 .andExpect(method(HttpMethod.GET))
                 .andExpect(header("User-Agent", userAgent))
                 .andRespond(withSuccess(getBodyFromFile("aron.json"), MediaType.APPLICATION_JSON));
-    }
 
-    @Test
-    public void getAllPokemons_shouldCallPokeApiForEveryPageAndRetrieveEveryPokemonOnTheResponses() {
         List<PokemonApiDTO> pokemons = this.client.getAllPokemons();
 
         assertEquals(7, pokemons.size());
     }
 
-    private static String getBodyFromFile(String fileName) throws IOException {
-        File file = new File(PokemonApiClientRestTest.class.getResource("/" + fileName).getFile());
+
+    @Test
+    public void getAllPokemons_shouldThrowExceptionOnPokeApiError() {
+        this.server.expect(
+                requestTo("http://localhost:8080/api/v2/pokemon"))
+                .andExpect(method(HttpMethod.GET))
+                .andExpect(header("User-Agent", userAgent))
+                .andRespond(withBadRequest());
+
+        assertThrows(RestClientResponseException.class, () -> this.client.getAllPokemons());
+    }
+
+    private String getBodyFromFile(String fileName) throws IOException {
+        File file = new File(getClass().getResource("/" + fileName).getFile());
         return new String(Files.readAllBytes(file.toPath()));
     }
 }

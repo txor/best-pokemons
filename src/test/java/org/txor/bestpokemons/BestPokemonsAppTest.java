@@ -1,8 +1,7 @@
 package org.txor.bestpokemons;
 
 import com.github.tomakehurst.wiremock.WireMockServer;
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.web.client.TestRestTemplate;
@@ -19,7 +18,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(properties="pokemon.api.url=http://localhost:8080/api/v2/pokemon", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties = "pokemon.api.url=http://localhost:8080/api/v2/pokemon", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BestPokemonsAppTest {
 
     private static final WireMockServer wireMockServer = new WireMockServer(8080);
@@ -29,8 +28,66 @@ public class BestPokemonsAppTest {
 
     private final TestRestTemplate restTemplate = new TestRestTemplate();
 
-    @BeforeAll
-    static void setup() throws IOException {
+    @AfterEach
+    public void shutdown() {
+        wireMockServer.stop();
+    }
+
+    @Test
+    public void bestPokemonsApp_shouldReturnThe5HeaviestPokemonsFromPokeapi() throws IOException {
+        setupHappyPath();
+
+        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/heaviest", PokemonDTO[].class);
+
+        assertEquals(5, pokemons.length);
+        assertEquals("arbok", pokemons[0].getName());
+        assertEquals("fearow", pokemons[1].getName());
+        assertEquals("raichu", pokemons[2].getName());
+        assertEquals("ekans", pokemons[3].getName());
+        assertEquals("pikachu", pokemons[4].getName());
+    }
+
+    @Test
+    public void bestPokemonsApp_shouldReturnThe5HighestPokemonsFromPokeapi() throws IOException {
+        setupHappyPath();
+
+        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/tallest", PokemonDTO[].class);
+
+        assertEquals(5, pokemons.length);
+        assertEquals("arbok", pokemons[0].getName());
+        assertEquals("ekans", pokemons[1].getName());
+        assertEquals("fearow", pokemons[2].getName());
+        assertEquals("raichu", pokemons[3].getName());
+        assertEquals("pikachu", pokemons[4].getName());
+    }
+
+    @Test
+    public void bestPokemonsApp_shouldReturnThe5MostExperiencedPokemonsFromPokeapi() throws IOException {
+        setupHappyPath();
+
+        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/most_experienced", PokemonDTO[].class);
+
+        assertEquals(5, pokemons.length);
+        assertEquals("raichu", pokemons[0].getName());
+        assertEquals("arbok", pokemons[1].getName());
+        assertEquals("fearow", pokemons[2].getName());
+        assertEquals("pikachu", pokemons[3].getName());
+        assertEquals("ekans", pokemons[4].getName());
+    }
+
+    @Test
+    public void bestPokemonsApp_shouldReturnNothingIfPokeApiIsNotResponding() {
+        wireMockServer.start();
+        stubFor(get(urlEqualTo("/api/v2/pokemon"))
+                .willReturn(aResponse()
+                        .withStatus(404)));
+
+        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/most_experienced", PokemonDTO[].class);
+
+        assertEquals(0, pokemons.length);
+    }
+
+    private void setupHappyPath() throws IOException {
         wireMockServer.start();
         stubFor(get(urlEqualTo("/api/v2/pokemon"))
                 .willReturn(aResponse()
@@ -68,47 +125,6 @@ public class BestPokemonsAppTest {
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("aron.json"))));
-    }
-
-    @AfterAll
-    static void shutdown() {
-        wireMockServer.stop();
-    }
-
-    @Test
-    public void bestPokemonsApp_shouldReturnThe5HeaviestPokemonsFromPokeapi() {
-        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/heaviest", PokemonDTO[].class);
-
-        assertEquals(5, pokemons.length);
-        assertEquals("arbok", pokemons[0].getName());
-        assertEquals("fearow", pokemons[1].getName());
-        assertEquals("raichu", pokemons[2].getName());
-        assertEquals("ekans", pokemons[3].getName());
-        assertEquals("pikachu", pokemons[4].getName());
-    }
-
-    @Test
-    public void bestPokemonsApp_shouldReturnThe5HighestPokemonsFromPokeapi() {
-        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/tallest", PokemonDTO[].class);
-
-        assertEquals(5, pokemons.length);
-        assertEquals("arbok", pokemons[0].getName());
-        assertEquals("ekans", pokemons[1].getName());
-        assertEquals("fearow", pokemons[2].getName());
-        assertEquals("raichu", pokemons[3].getName());
-        assertEquals("pikachu", pokemons[4].getName());
-    }
-
-    @Test
-    public void bestPokemonsApp_shouldReturnThe5MostExperiencedPokemonsFromPokeapi() {
-        PokemonDTO[] pokemons = restTemplate.getForObject("http://localhost:" + port + "/most_experienced", PokemonDTO[].class);
-
-        assertEquals(5, pokemons.length);
-        assertEquals("raichu", pokemons[0].getName());
-        assertEquals("arbok", pokemons[1].getName());
-        assertEquals("fearow", pokemons[2].getName());
-        assertEquals("pikachu", pokemons[3].getName());
-        assertEquals("ekans", pokemons[4].getName());
     }
 
     private static String getBodyFromFile(String fileName) throws IOException {
