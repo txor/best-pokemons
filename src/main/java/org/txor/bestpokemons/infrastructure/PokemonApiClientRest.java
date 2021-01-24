@@ -2,6 +2,10 @@ package org.txor.bestpokemons.infrastructure;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.txor.bestpokemons.domain.PokemonApiClient;
@@ -12,6 +16,8 @@ import java.util.List;
 
 @Service
 public class PokemonApiClientRest implements PokemonApiClient {
+
+    private static final String userAgent = "java";
 
     private final RestTemplate restTemplate;
     private final String startUrl;
@@ -26,10 +32,10 @@ public class PokemonApiClientRest implements PokemonApiClient {
         ArrayList<PokemonApiDTO> pokemons = new ArrayList<>();
         String nextUrl = startUrl;
         do {
-            PokemonPageDTO pokemonPage = restTemplate.getForObject(nextUrl, PokemonPageDTO.class);
+            PokemonPageDTO pokemonPage = getForObject(nextUrl, PokemonPageDTO.class);
             nextUrl = pokemonPage.getNext();
             for (PokemonReferenceDTO pokemon : pokemonPage.getResults()) {
-                PokemonApiDTO pokemonApiDTO = restTemplate.getForObject(pokemon.getUrl(), PokemonApiDTO.class);
+                PokemonApiDTO pokemonApiDTO = getForObject(pokemon.getUrl(), PokemonApiDTO.class);
                 pokemonApiDTO.setName(pokemon.getName());
                 pokemonApiDTO.setUrl(pokemon.getUrl());
                 pokemons.add(pokemonApiDTO);
@@ -39,4 +45,14 @@ public class PokemonApiClientRest implements PokemonApiClient {
         return pokemons;
     }
 
+    private <T> T getForObject(String url, Class<T> dtoClass) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("User-Agent", userAgent);
+        HttpEntity entity = new HttpEntity(headers);
+
+        ResponseEntity<T> response = restTemplate.exchange(
+                url, HttpMethod.GET, entity, dtoClass);
+
+        return response.getBody();
+    }
 }
