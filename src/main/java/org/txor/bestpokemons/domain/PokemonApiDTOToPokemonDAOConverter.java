@@ -5,9 +5,9 @@ public class PokemonApiDTOToPokemonDAOConverter {
         PokemonDAO pokemonDAO = new PokemonDAO();
         pokemonDAO.setName(pokemonApiDTO.getName());
         pokemonDAO.setUrl(pokemonApiDTO.getUrl());
-        pokemonDAO.setWeight(pokemonApiDTO.getWeight());
-        pokemonDAO.setHeight(pokemonApiDTO.getHeight());
-        pokemonDAO.setExperience(pokemonApiDTO.getExperience());
+        pokemonDAO.setWeight(Integer.parseInt(pokemonApiDTO.getWeight()));
+        pokemonDAO.setHeight(Integer.parseInt(pokemonApiDTO.getHeight()));
+        pokemonDAO.setExperience(Integer.parseInt(pokemonApiDTO.getExperience()));
         return pokemonDAO;
     }
 }

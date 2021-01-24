@@ -17,7 +17,7 @@ public class PokemonDAO {
     private int id;
     private String name;
     private String url;
-    private String weight;
-    private String height;
-    private String experience;
+    private int weight;
+    private int height;
+    private int experience;
 }

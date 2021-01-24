@@ -77,10 +77,10 @@ public class BestPokemonsAppTest {
 
         assertEquals(5, pokemons.length);
         assertEquals("arbok", pokemons[0].getName());
-        assertEquals("fearow", pokemons[0].getName());
-        assertEquals("raichu", pokemons[0].getName());
-        assertEquals("ekans", pokemons[0].getName());
-        assertEquals("pickachu", pokemons[0].getName());
+        assertEquals("fearow", pokemons[1].getName());
+        assertEquals("raichu", pokemons[2].getName());
+        assertEquals("ekans", pokemons[3].getName());
+        assertEquals("pikachu", pokemons[4].getName());
     }
 
     @Test
@@ -89,10 +89,10 @@ public class BestPokemonsAppTest {
 
         assertEquals(5, pokemons.length);
         assertEquals("arbok", pokemons[0].getName());
-        assertEquals("ekans", pokemons[0].getName());
-        assertEquals("fearow", pokemons[0].getName());
-        assertEquals("riachu", pokemons[0].getName());
-        assertEquals("pickachu", pokemons[0].getName());
+        assertEquals("ekans", pokemons[1].getName());
+        assertEquals("fearow", pokemons[2].getName());
+        assertEquals("riachu", pokemons[3].getName());
+        assertEquals("pikachu", pokemons[4].getName());
     }
 
     @Test
@@ -101,10 +101,10 @@ public class BestPokemonsAppTest {
 
         assertEquals(5, pokemons.length);
         assertEquals("raichu", pokemons[0].getName());
-        assertEquals("arbok", pokemons[0].getName());
-        assertEquals("fearow", pokemons[0].getName());
-        assertEquals("pickachu", pokemons[0].getName());
-        assertEquals("ekans", pokemons[0].getName());
+        assertEquals("arbok", pokemons[1].getName());
+        assertEquals("fearow", pokemons[2].getName());
+        assertEquals("pikachu", pokemons[3].getName());
+        assertEquals("ekans", pokemons[4].getName());
     }
 
     private static String getBodyFromFile(String fileName) throws IOException {
