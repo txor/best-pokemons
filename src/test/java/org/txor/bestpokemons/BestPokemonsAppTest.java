@@ -19,7 +19,7 @@ import static com.github.tomakehurst.wiremock.client.WireMock.stubFor;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlEqualTo;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-@SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
+@SpringBootTest(properties="pokemon.api.url=http://localhost:8080/api/v2/pokemon", webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class BestPokemonsAppTest {
 
     private static final WireMockServer wireMockServer = new WireMockServer(8080);
@@ -35,28 +35,32 @@ public class BestPokemonsAppTest {
         stubFor(get(urlEqualTo("/api/v2/pokemon"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
-                        .withBody(getBodyFromFile("pokemons.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/21"))
+                        .withBody(getBodyFromFile("pokemons_page1.json"))));
+        stubFor(get(urlEqualTo("/api/v2/pokemon"))
+                .willReturn(aResponse()
+                        .withHeader("Content-Type", "application/json")
+                        .withBody(getBodyFromFile("pokemons_page2.json"))));
+        stubFor(get(urlEqualTo("/api/v2/pokemon/21/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("spearow.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/22"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon/22/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("fearow.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/23"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon/23/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("ekans.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/24"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon/24/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("arbok.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/25"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon/25/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("pikachu.json"))));
-        stubFor(get(urlEqualTo("/api/v2/pokemon/26"))
+        stubFor(get(urlEqualTo("/api/v2/pokemon/26/"))
                 .willReturn(aResponse()
                         .withHeader("Content-Type", "application/json")
                         .withBody(getBodyFromFile("raichu.json"))));

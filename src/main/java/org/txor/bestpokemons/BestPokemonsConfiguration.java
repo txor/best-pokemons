@@ -9,7 +9,6 @@ import org.txor.bestpokemons.domain.PokemonApiDTOToPokemonDAOConverter;
 import org.txor.bestpokemons.domain.PokemonDaoToPokemonConverter;
 import org.txor.bestpokemons.domain.PokemonToPokemonDtoConverter;
 import org.txor.bestpokemons.domain.RefreshDataService;
-import org.txor.bestpokemons.infrastructure.PokemonApiClientRest;
 import org.txor.bestpokemons.repository.PokemonRepository;
 
 @Configuration
@@ -34,17 +33,12 @@ public class BestPokemonsConfiguration {
     }
 
     @Bean
-    public PokemonApiClient pokemonApiClient() {
-        return new PokemonApiClientRest();
-    }
-
-    @Bean
-    public HeavyService heavyService(RefreshDataService refreshDataService, PokemonRepository pokemonRepository, PokemonDaoToPokemonConverter pokemonDaoToPokemonConverter) {
+    public HeavyService heavyService(RefreshDataService refreshDataService, PokemonDaoToPokemonConverter pokemonDaoToPokemonConverter) {
         return new HeavyService(refreshDataService, pokemonRepository, pokemonDaoToPokemonConverter);
     }
 
     @Bean
-    public RefreshDataService refreshDataService(PokemonRepository pokemonRepository, PokemonApiClient pokemonApiClient, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter) {
+    public RefreshDataService refreshDataService(PokemonApiClient pokemonApiClient, PokemonApiDTOToPokemonDAOConverter pokemonApiDtoToPokemonDaoConverter) {
         return new RefreshDataService(pokemonRepository, pokemonApiClient, pokemonApiDtoToPokemonDaoConverter);
     }
 }
